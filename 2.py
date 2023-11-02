@@ -1,27 +1,22 @@
 import random
 
-def random_int(): return random.randint(-1_000_000,1_000_000)
+def random_int(): return random.randint(-1_000_000, 1_000_000)
 
-# element_count = int(input("Введите количество слов для генераци: "))
-element_count = 10
+element_count = int(input("Введите кол-во чисел: "))
 elements = [random_int() for i in range(element_count)]
 print(*elements)
+negative = []
+negative_index = []
+pos = 0
 
-start_index = end_index = max_start_index = max_end_index = None
-for i in range(element_count):
-    if elements[i] < 0 and start_index is None:
-        start_index = i
-        end_index = i
-    elif elements[i] < 0 and start_index is not None:
-        end_index+=1
-    elif elements[i]>= 0 and start_index is not None:
-        if max_start_index is None or (end_index - start_index) > (max_end_index-max_start_index):
-            max_start_index = start_index
-            max_end_index = end_index
-            start_index = None
-            end_index = None
-
-if max_start_index is not None and max_end_index is not None:
-    print(*elements[:max_start_index]+elements[max_end_index+1:]+elements[max_start_index:max_end_index+1])
-    print(elements[max_start_index:max_end_index+1])
-else:print(*elements)
+while (pos < element_count):
+    if elements[pos] < 0:
+        left = pos
+        while (pos < element_count and elements[pos] < 0):
+            pos += 1
+        else:
+            negative.append(pos - left)
+            negative_index.append([left, pos])
+    pos += 1
+maxx = negative_index[negative.index(max(negative))]
+print("Результат:", *elements[:maxx[0]] + elements[maxx[1]:] + elements[maxx[0]:maxx[1]])
